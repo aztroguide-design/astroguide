@@ -3,183 +3,258 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Astroguide - Relationship Assessment</title>
+  <title>AstroGuide - Select Language</title>
   
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <style>
-    /* --- RESET & LAYOUT --- */
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
-    
-    /* --- HEADER --- */
-    header { background-color: #000; color: white; width: 100%; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    .header-content { width: 90%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .header-content h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
-    .header-content img { height: 50px; width: auto; border-radius: 4px; }
-
-    /* --- MAIN SECTION --- */
-    section { flex: 1; width: 90%; max-width: 1200px; margin: 30px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-
-    /* --- CARDS --- */
-    .card { background: white; border-radius: 12px; padding: 25px; flex: 1 1 300px; max-width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
-    .card:hover { transform: translateY(-5px); }
-    .card h2 { margin-top: 0; color: #333; font-size: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-    .card p { color: #666; font-size: 14px; line-height: 1.5; }
-
-    /* --- BUY BUTTON --- */
-    .buy-btn { margin-top: 20px; width: 100%; padding: 12px; background-color: #26c485; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.3s; }
-    .buy-btn:hover { background-color: #1fa06b; }
-
-    /* --- MODAL (POPUP) --- */
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
-    .modal-content { background-color: white; padding: 25px; border-radius: 15px; text-align: center; max-width: 380px; width: 85%; position: relative; animation: fadeIn 0.3s; }
-    
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #888; }
-    
-    /* --- PAYMENT ELEMENTS --- */
-    .amount-alert {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeeba;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        margin-bottom: 15px;
-        font-weight: bold;
+    /* --- General Page Styles --- */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
 
-    #dynamic-qr { width: 160px; height: 160px; margin: 10px auto; display: block; border: 4px solid #f0f0f0; border-radius: 8px; }
-    
-    .upi-display { background: #eef; color: #333; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 14px; margin-bottom: 15px; display: inline-block; }
-
-    /* SLIDE BUTTON STYLE */
-    .slide-btn {
-        background: linear-gradient(90deg, #5f259f, #9c27b0); /* PhonePe Colors */
-        color: white;
-        border: none;
-        padding: 14px;
-        width: 100%;
-        border-radius: 30px; /* Rounded pill shape */
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px;
-        transition: transform 0.1s;
+    /* --- Header --- */
+    header {
+      background-color: #000;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    .slide-btn:active { transform: scale(0.98); }
 
-    .wa-btn { background-color: #25D366; color: white; padding: 12px; text-decoration: none; border-radius: 6px; font-weight: bold; display: block; margin-top: 10px; }
-    
-    hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
-    footer { background-color: black; color: white; text-align: center; padding: 20px 0; margin-top: auto; font-size: 12px; }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    /* --- Main Container --- */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    /* --- Card Style --- */
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 30px;
+      text-align: center;
+      border-top: 5px solid #ff9800;
+    }
+
+    /* Image area inside card */
+    .card-img-container {
+      background-color: #fff3e0;
+      padding: 20px;
+    }
+
+    .card-img-container img {
+      width: 150px;
+      height: auto;
+      border-radius: 50%;
+      border: 3px solid #ff9800;
+    }
+
+    .card-content {
+      padding: 30px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 24px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .highlight-text {
+      background-color: #fff3e0;
+      color: #d84315;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    /* --- Form Elements --- */
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    /* --- Action Button --- */
+    .cta-btn {
+      width: 100%;
+      padding: 15px;
+      background: #ff9800;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-transform: uppercase;
+      box-shadow: 0 4px 6px rgba(255, 152, 0, 0.3);
+    }
+
+    .cta-btn:hover {
+      background: #e65100;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: #000;
+      color: #888;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      margin-top: auto;
+    }
   </style>
 </head>
-
-<body oncontextmenu="return false;">
+<body>
 
   <header>
-    <div class="header-content">
-      <h1>ASTROGUIDE</h1>
-      <img src="ak.jpeg" alt="Logo">
-    </div>
+    <h1>ASTROGUIDE</h1>
   </header>
 
-  <section>
-    <div class="card">
-      <h2>Telugu PDF</h2>
-      <p>​"వేద జ్యోతిషశాస్త్రం ఆధారంగా రూపొందించిన ఈ 5 సంవత్సరాల పూర్తి జాతక నివేదికతో మీ భవిష్యత్తును స్పష్టంగా తెలుసుకోండి. ఈ PDF మీ ఉద్యోగం, ఆర్థిక స్థితి, ఆరోగ్యం మరియు కుటుంబ సంబంధాల గురించి వివరిస్తుంది. రాబోయే మంచి, చెడు కాలాలను ముందుగానే గ్రహించి, సరైన పరిహారాలతో మీ జీవితాన్ని మెరుగుపరుచుకోండి."</p>
-      <button class="buy-btn" onclick="openModal('Telugu PDF')">Buy Now <span>➔</span></button>
-    </div>
+  <div class="container">
 
     <div class="card">
-      <h2>English PDF</h2>
-      <p>​"Unlock the mysteries of your future with a comprehensive 5-year prediction report based on Vedic Astrology. This detailed PDF analyzes your career, finances, health, and relationships, offering precise insights into upcoming opportunities and challenges. Navigate your life with confidence using personalized remedies and favorable timing for your major decisions."</p>
-      <button class="buy-btn" onclick="openModal('English PDF')">Buy Now <span>➔</span></button>
-    </div>
-
-    <div class="card">
-      <h2>Hindi PDF</h2>
-      <p>​"वैदिक ज्योतिष पर आधारित इस विस्तृत 5-वर्षीय भविष्यवाणी रिपोर्ट के साथ अपने भविष्य के रहस्यों को जानें। यह PDF आपके करियर, वित्त, स्वास्थ्य और रिश्तों का विश्लेषण करती है, जो आने वाले अवसरों और चुनौतियों पर सटीक जानकारी देती है। व्यक्तिगत उपायों और सही समय के ज्ञान के साथ अपने जीवन को आत्मविश्वास से दिशा दें।"</p>
-      <button class="buy-btn" onclick="openModal('Hindi PDF')">Buy Now <span>➔</span></button>
-    </div>
-  </section>
-
-  <div id="paymentModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      
-      <h3 style="margin-top: 0;">Complete Payment</h3>
-      
-      <div class="amount-alert">
-         ⚠️ Important: You must enter <b>₹29</b> manually in the app!
+      <div class="card-img-container">
+        <img src="ak.jpeg" alt="AstroGuide Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2649/2649359.png'"> 
       </div>
-
-      <img id="dynamic-qr" src="" alt="QR Code">
-      <div class="upi-display">prasannagrandi@ybl</div>
-
-      <button class="slide-btn" onclick="payDirect()">
-        <span>⚡ Open PhonePe / UPI App</span>
-      </button>
-
-      <hr>
-
-      <h4>Step 2: Get Your PDF</h4>
-      <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Send the screenshot on WhatsApp to receive the file instantly.</p>
       
-      <a id="whatsappLink" href="#" class="wa-btn" target="_blank">
-        Open WhatsApp & Send Proof
-      </a>
+      <div class="card-content">
+        <h2>Get Your Premium Kundali</h2>
+        
+        <p>
+         ​"Unlock the mysteries of your future with a comprehensive 5-year prediction report based on Vedic Astrology. This detailed PDF analyzes your career, finances, health, and relationships, offering precise insights into upcoming opportunities and challenges. Navigate your life with confidence using personalized remedies and favorable timing for your major decisions."
+        </p>
+        
+        <p>
+           ​"वैदिक ज्योतिष पर आधारित इस विस्तृत 5-वर्षीय भविष्यवाणी रिपोर्ट के साथ अपने भविष्य के रहस्यों को जानें। यह PDF आपके करियर, वित्त, स्वास्थ्य और रिश्तों का विश्लेषण करती है, जो आने वाले अवसरों और चुनौतियों पर सटीक जानकारी देती है। व्यक्तिगत उपायों और सही समय के ज्ञान के साथ अपने जीवन को आत्मविश्वास से दिशा दें।"
+        </p>
+      <p>​"వేద జ్యోతిషశాస్త్రం ఆధారంగా రూపొందించిన ఈ 5 సంవత్సరాల పూర్తి జాతక నివేదికతో మీ భవిష్యత్తును స్పష్టంగా తెలుసుకోండి. ఈ PDF మీ ఉద్యోగం, ఆర్థిక స్థితి, ఆరోగ్యం మరియు కుటుంబ సంబంధాల గురించి వివరిస్తుంది. రాబోయే మంచి, చెడు కాలాలను ముందుగానే గ్రహించి, సరైన పరిహారాలతో మీ జీవితాన్ని మెరుగుపరుచుకోండి."</p>
+        <div class="highlight-text">
+          Available in 5 Indian Languages
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <div class="form-group">
+          <label for="languageSelect">Select Your Language:</label>
+          <select id="languageSelect">
+            <option value="telugu">Telugu (తెలుగు)</option>
+            <option value="english">English</option>
+            <option value="hindi">Hindi (हिंदी)</option>
+            <option value="malayalam">Malayalam (മലയാളം)</option>
+            <option value="kannada">Kannada (ಕನ್ನಡ)</option>
+          </select>
+        </div>
+
+        <button id="payBtn" class="cta-btn" onclick="startPayment()">
+          Pay ₹29 & Get Report <span style="margin-left:5px;">➔</span>
+        </button>
+
+      </div>
     </div>
+
   </div>
 
-  <footer>© ASTROGUIDE</footer>
+  <footer>
+    &copy; 2026 ASTROGUIDE. All Rights Reserved.
+  </footer>
 
   <script>
-    // --- YOUR DETAILS ---
-    const myUpiId = "prasannagrandi@ybl"; 
-    const myName = "Astroguide";
-    // NOTE: 'amount' removed to fix security error. User types it manually.
-    const myWhatsAppNumber = "919912531729"; 
-    // --------------------
-
-    const modal = document.getElementById("paymentModal");
-    const waLink = document.getElementById("whatsappLink");
-    const qrImage = document.getElementById("dynamic-qr");
-
-    function openModal(productName) {
-      modal.style.display = "flex";
+    function startPayment() {
+      // 1. Get Selected Language
+      const lang = document.getElementById("languageSelect").value;
       
-      // 1. Generate QR Code (With NO amount, so it is safe)
-      // This generates a QR that just fills in the UPI ID
-      const upiLink = `upi://pay?pa=${myUpiId}&pn=${myName}&cu=INR`;
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
-      qrImage.src = qrApiUrl;
-
-      // 2. Setup WhatsApp Link
-      const text = `Hello! I have paid ₹29 for the ${productName}. Here is the screenshot:`;
-      waLink.href = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(text)}`;
-    }
-
-    function payDirect() {
-      // 3. Open App Direct Link (No amount specified)
-      // This usually bypasses the "Security Error"
-      const upiLink = `upi://pay?pa=${myUpiId}&pn=${myName}&cu=INR`;
-      window.location.href = upiLink;
-    }
-
-    function closeModal() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        closeModal();
+      // Determine the target file based on selection
+      let targetFile = "";
+      if (lang === "telugu") {
+        targetFile = "an.html";
+      } else if (lang === "english") {
+        targetFile = "an2.html";
+      } else if (lang === "hindi") {
+        targetFile = "an3.html";
+      } else if (lang === "malayalam") {
+        targetFile = "an4.html";
+      } else if (lang === "kannada") {
+        targetFile = "an5.html";
       }
+
+      // 2. Razorpay Configuration
+      var options = {
+        "key": "rzp_live_SH5Ki61L7AG0Tt", // Your Live Key ID
+        "amount": "2900", // Amount is in paise (2900 paise = ₹29)
+        "currency": "INR",
+        "name": "AstroGuide",
+        "description": "Premium Astrology Report",
+        "image": "https://cdn-icons-png.flaticon.com/512/2649/2649359.png", // Optional Logo
+        "handler": function (response){
+            // 3. THIS CODE RUNS ONLY AFTER SUCCESSFUL PAYMENT
+            // alert("Payment Successful! ID: " + response.razorpay_payment_id);
+            
+            // Redirect to the selected file
+            if (targetFile) {
+                window.location.href = targetFile;
+            }
+        },
+        "prefill": {
+            "name": "",   // You can pre-fill these if you have the data
+            "email": "",
+            "contact": ""
+        },
+        "theme": {
+            "color": "#ff9800" // Matches your Orange theme
+        }
+      };
+
+      // 4. Open Razorpay
+      var rzp1 = new Razorpay(options);
+      rzp1.on('payment.failed', function (response){
+            alert("Payment Failed. Please try again.");
+            console.error(response.error);
+      });
+      rzp1.open();
     }
   </script>
 
