@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroGuide Premium Report</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+
+    <style>
+        /* --- UI STYLES --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #e0e0e0; 
+            color: #333; 
+        }
+
+        /* Control Panel Box */
+        #controls { 
+            width: 210mm; 
+            max-width: 90%;
+            margin: 20px auto; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            text-align: center;
+        }
+
+        .input-row { 
+            display: flex; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            margin-bottom: 20px; 
+        }
+
+        .input-group { 
+            text-align: left;
+        }
+
+        label { 
+            display: block; 
+            font-weight: bold; 
+            font-size: 12px; 
+            margin-bottom: 5px; 
+            color: #555;
+        }
+
+        input { 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            font-size: 14px;
+        }
+
+        /* Generate Button */
+        .btn-action { 
+            padding: 12px 40px; 
+            background: #f57c00; 
+            color: white; 
+            border: none; 
+            border-radius: 30px; 
+            font-weight: bold; 
+            font-size: 16px;
+            cursor: pointer; 
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(245, 124, 0, 0.3);
+        }
+
+        .btn-action:hover { 
+            background: #e65100; 
+        }
+        
+        .btn-action:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Floating Bottom Bar for Print */
+        #bottomBar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: #333; 
+            padding: 15px; 
+            text-align: center; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2); 
+            display: none; /* Hidden until generated */
+            z-index: 1000; 
+        }
+
+        .btn-print { 
+            padding: 10px 30px; 
+            background: #27ae60; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+        }
+
+        /* Loading Spinner text */
+        #statusMessage {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #f57c00;
+            display: none;
+        }
+
+        /* --- PRINT MEDIA QUERY --- */
+        @media print {
+            #controls, #bottomBar { display: none !important; }
+            body { background: white; margin: 0; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <h2 style="color:#d35400; margin-top:0;">AstroGuide Generator</h2>
+        
+        <div class="input-row">
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" id="name" placeholder="Enter Name">
+            </div>
+            <div class="input-group">
+                <label>Date of Birth</label>
+                <input type="date" id="date">
+            </div>
+            <div class="input-group">
+                <label>Time of Birth</label>
+                <input type="time" id="time" value="10:00">
+            </div>
+            
+            <div class="input-group">
+                <label>Place of Birth (City)</label>
+                <input type="text" id="cityInput" placeholder="e.g. Tenali, Guntur">
+            </div>
+
+            <input type="hidden" id="lat" value="16.24"> 
+            <input type="hidden" id="lng" value="80.64">
+        </div>
+
+        <button id="genBtn" class="btn-action" onclick="findLocationAndGenerate()">Generate Page Report</button>
+        <div id="statusMessage">Searching for city coordinates...</div>
+    </div>
+
+    <div id="reportContainer"></div>
+
+    <div id="bottomBar">
+        <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+
+    <script src="script4.js"></script>
+
+    <script>
+        async function findLocationAndGenerate() {
+            const city = document.getElementById('cityInput').value.trim();
+            const btn = document.getElementById('genBtn');
+            const status = document.getElementById('statusMessage');
+
+            // 1. Basic Validation
+            if (!city) {
+                alert("Please enter a Place of Birth (City name).");
+                return;
+            }
+
+            // 2. Show Loading State
+            btn.disabled = true;
+            status.style.display = 'block';
+            status.innerText = "Finding " + city + "...";
+
+            try {
+                // 3. Call OpenStreetMap API (Free)
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    // 4. Success: Update Hidden Lat/Lng fields
+                    document.getElementById('lat').value = data[0].lat;
+                    document.getElementById('lng').value = data[0].lon;
+                    
+                    status.innerText = "Location found! Generating Chart...";
+                    
+                    // 5. Call your original function from script2.js
+                    // (Adding a small delay to ensure DOM updates)
+                    setTimeout(() => {
+                        if (typeof generateFullReport === "function") {
+                            generateFullReport(); 
+                            // Show Print Bar
+                            document.getElementById('bottomBar').style.display = 'block';
+                        } else {
+                            alert("Error: script4.js not loaded correctly.");
+                        }
+                        // Reset UI
+                        btn.disabled = false;
+                        status.style.display = 'none';
+                    }, 500);
+
+                } else {
+                    alert("City not found! Please check the spelling or try a nearby major city.");
+                    btn.disabled = false;
+                    status.style.display = 'none';
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Network error. Could not fetch coordinates. Please check internet connection.");
+                btn.disabled = false;
+                status.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
